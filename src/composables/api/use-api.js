@@ -1,4 +1,4 @@
-import { ref, inject, defineComponent } from "vue";
+import { ref, inject } from "vue";
 import { authHeader } from "../auth";
 
 export async function useFetch(url) {
@@ -56,72 +56,35 @@ export async function usePost(url, data) {
     return { loading, error, responseData };
 }
 
-// export async function useDelete(url, id) {
+export async function useDelete(url, id) {
+    let axios = inject('axios');
+    const responseData = ref(null);
+    const loading = ref(false);
+    const error = ref(null);
 
-//     const responseData = ref(null);
-//     const loading = ref(false);
-//     const error = ref(null);
-
-//     try {
-//         let axios = inject('axios');
-//         loading.value = true;
-//         error.value = null;
-//         const config = {
-//             method: "DELETE",
-//             url: url + '/' + id,
-//             headers: {
-//                 "Authorization": authHeader()
-//             }
-//         };
-//         const response = await axios(config);
-//         responseData.value = await response.data;
-//         // const response = await fetch(url + '/' + id, {
-//         //     method: 'DELETE'
-//         // })
-//         // console.log("Response: ", response);
-//     } catch (err) {
-//         error.value = err;
-//     } finally {
-//         loading.value = false;
-//     }
-
-//     return { loading, error, responseData };
-// }
-
-export const useDeleteComponent = defineComponent({
-    setup() {
-        const axios = inject('axios');
-        const responseData = ref(null);
-        const loading = ref(false);
-        const error = ref(null);
-
-        async function useDelete(url, id) {
-            try {
-                loading.value = true;
-                error.value = null;
-                const config = {
-                    method: "DELETE",
-                    url: url + '/' + id,
-                    headers: {
-                        "Authorization": authHeader()
-                    }
-                };
-                const response = await axios(config);
-                responseData.value = await response.data;
-            } catch (err) {
-                error.value = err;
-            } finally {
-                loading.value = false;
+    try {
+        loading.value = true;
+        error.value = null;
+        const config = {
+            method: "DELETE",
+            url: url + '/' + id,
+            headers: {
+                "Authorization": authHeader()
             }
-            return { loading, error, responseData };
-        }
-
-        return {
-            loading,
-            error,
-            responseData,
-            useDelete
         };
+        const response = await axios(config);
+        responseData.value = await response.data;
+        // const response = await fetch(url + '/' + id, {
+        //     method: 'DELETE'
+        // })
+        // console.log("Response: ", response);
+    } catch (err) {
+        error.value = err;
+    } finally {
+        loading.value = false;
     }
-});
+
+    return { loading, error, responseData };
+}
+
 

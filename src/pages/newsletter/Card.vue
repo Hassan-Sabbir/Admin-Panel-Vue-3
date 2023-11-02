@@ -18,7 +18,6 @@
 
 <script setup>
     import { inject } from 'vue';
-    import { useDeleteComponent } from "../../composables/api/use-api";
     import Swal from 'sweetalert2';
 
     const props = defineProps(['data']);
@@ -28,12 +27,9 @@
     const url = serverURL + api.newsletter.requestUrl;
 
     const deleteData = async (id) => {
-        const { loading, error, responseData, useDelete } = useDeleteComponent;
-        const res = await useDelete(url, id);
-        console.log("Res: ", res);
-        // const { loading, error, responseData } = await useDelete(url, id);
-        // console.log("Response: ", responseData.value)
-        // console.log("Response error: ", error.value)
+        const { loading, error, responseData } = await useDelete(url, id);
+        console.log("Response: ", responseData.value)
+        console.log("Response error: ", error.value)
         // this.$swal('Hello, SweetAlert!', error.value, 'error');
         // Vue.swal('Hello Vue world!!!');
         // Swal.fire({
